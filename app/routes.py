@@ -1,6 +1,7 @@
 from flask import render_template, request
 import requests
 from app import app
+from .forms import LoginForm
 
 # app routes
 @app.route('/', methods = ['GET'])
@@ -15,7 +16,8 @@ def students():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-    if request.method == 'POST':
+    form = LoginForm()
+    if request.method == 'POST' and form.validate_on_submit():
         #do Login stuff
         email = request.form.get("email").lower()
         password = request.form.get("password")
@@ -23,9 +25,9 @@ def login():
             password == app.config.get("REGISTERED_USERS").get(email).get('password'):
             return f"Login success Welcome {app.config.get('REGISTERED_USERS').get(email).get('name')}"
         error_string = "Invalid Email password combo"
-        return render_template('login.html.j2', error = error_string)
+        return render_template('login.html.j2', error = error_string, form=form)
 
-    return render_template('login.html.j2')
+    return render_template('login.html.j2', form=form)
 
 @app.route('/ergast', methods=['GET', 'POST'])
 def ergast():
