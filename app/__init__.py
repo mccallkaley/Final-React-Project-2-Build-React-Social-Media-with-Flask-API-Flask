@@ -8,21 +8,32 @@ from flask_migrate import Migrate #this makes altering the db a lot easier
 
 
 # app instaniation
-app = Flask(__name__)
-app.config.from_object(Config)
 
 # init login manager
-login = LoginManager(app)
+login = LoginManager()
 # This is where you will be sent if you are not logged in
-login.login_view = 'login'
+login.login_view = 'auth.login'
 
 # Stuff to work with the DB
 
 # inits the database
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+migrate = Migrate()
 
-migrate = Migrate(app, db)
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    #register plugins
+    login.init_app(app)    
+    db.init_app(app)
+    migrate.init_app(app,db)
+
+    # Register our blueprints with the app
+    from .blueprints.main import bp as main_bp
+    app.register_blueprint(main_bp)
+
+    from .blueprints.auth import bp as auth_bp
+    app.register_blueprint(auth_bp)
 
 
-
-from app import routes
+    return app
