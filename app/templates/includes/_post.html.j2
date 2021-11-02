@@ -1,0 +1,20 @@
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{post.author.get_icon_url()}}" class="img-fluid rounded-start" alt="avatar">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{post.author.first_name}} {{post.author.last_name}} posted: </h5>
+        <p class="card-text">{{post.body}}</p>
+        <small><a href="">View Post</a></small>
+
+        {% if current_user.id == post.author.id %}
+        <small><a href="{{url_for('social.edit_post', id=post.id)}}">Edit Post</a></small>
+        {% endif %}
+
+        <p class="card-text"><small class="text-muted">{{moment(post.date_created).fromNow()}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>
