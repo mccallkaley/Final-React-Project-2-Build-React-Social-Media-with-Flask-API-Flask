@@ -1,0 +1,14 @@
+{% extends 'base.html.j2' %}
+{% block title %}
+Fakebook - My Posts
+{% endblock %}
+
+{% block content %}
+    <h1>My Posts</h1>
+    <hr>
+    I have a list called posts being passed in to the template
+
+    {% for post in posts %}
+        {% include './includes/_post.html.j2' %}
+    {% endfor %}
+{% endblock %}

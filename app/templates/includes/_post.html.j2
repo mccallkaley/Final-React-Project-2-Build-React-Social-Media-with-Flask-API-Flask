@@ -6,14 +6,22 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">{{post.author.first_name}} {{post.author.last_name}} posted: </h5>
+        
+        {% if view_all %}
         <p class="card-text">{{post.body}}</p>
-        <small><a href="">View Post</a></small>
+        {% else %}
+        <p class="card-text">{{post.body | truncate(100)}}</p>
+        {% endif %}
+        <small><a href="{{url_for('social.get_post', id=post.id)}}">View Post</a></small>
 
         {% if current_user.id == post.author.id %}
         <small><a href="{{url_for('social.edit_post', id=post.id)}}">Edit Post</a></small>
         {% endif %}
 
-        <p class="card-text"><small class="text-muted">{{moment(post.date_created).fromNow()}}</small></p>
+        <p class="card-text"><small class="text-muted">
+        {{moment(post.date_created).fromNow()}}
+            <span style="color:lightcoral" class="float-end">{{"edited " + moment(post.date_updated).fromNow() | string() if post.date_updated else ""}}</span>
+         </small></p>
       </div>
     </div>
   </div>

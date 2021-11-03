@@ -104,5 +104,9 @@ class Post(db.Model):
         self.body=new_body
         self.save()
     
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+    
     def __repr__(self):
         return f'<id:{self.id} | Post: {self.body[:15]}>'

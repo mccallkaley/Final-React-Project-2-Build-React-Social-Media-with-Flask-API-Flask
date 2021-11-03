@@ -33,7 +33,9 @@
 
             {% if current_user.is_authenticated %}
             <ul class="navbar-nav ms-auto align-items-center">
-                <img src="{{current_user.get_icon_url()}}" style="height:50px">
+                <a href="{{url_for('social.my_posts')}}">
+                    <img src="{{current_user.get_icon_url()}}" style="height:50px">
+                </a>
                 <li class="nav-item">
                     <div class="row">
                         <div class="col-12">

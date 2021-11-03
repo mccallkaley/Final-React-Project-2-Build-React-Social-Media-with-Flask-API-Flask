@@ -1,9 +1,0 @@
-user     follows
-
-sally    john
-sally    jake
-sally    steve
-
-steve    sally
-
-jake     steve

@@ -45,3 +45,15 @@ def edit_post(id):
         post.edit(request.form.get('body'))
         flash("Your post has been edited","success")
     return render_template('edit_post.html.j2', post=post)
+
+@social.route('/post/<int:id>')
+@login_required
+def get_post(id):
+    post = Post.query.get(id)
+    return render_template('single_post.html.j2', post = post, view_all = True)
+
+@social.route('/post/my_posts')
+@login_required
+def my_posts():
+    posts = current_user.posts
+    return render_template('my_posts.html.j2', posts=posts)
