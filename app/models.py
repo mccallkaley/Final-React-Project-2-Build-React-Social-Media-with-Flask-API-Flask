@@ -1,9 +1,9 @@
 from app import db
 from flask_login import UserMixin # Use only for the a USER model
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import login
-
+import secrets
 
 followers = db.Table(
     'followers',
@@ -27,6 +27,39 @@ class User(UserMixin, db.Model):
                     backref=db.backref('followers',lazy='dynamic'),
                     lazy='dynamic'
                     )
+    token = db.Column(db.String, index=True, unique=True)
+    token_exp = db.Column(db.DateTime)
+    is_admin = db.Column(db.Boolean, default=False)
+
+    ##################################################
+    ############## Methods for Token auth ############
+    ##################################################
+
+    def get_token(self, exp=86400):
+        current_time = dt.utcnow()
+        # give the user their token if the token is not expired
+        if self.token and self.token_exp > current_time + timedelta(seconds=60):
+            return self.token
+        # if not a token create a token and exp date
+        self.token = secrets.token_urlsafe(32)
+        self.token_exp = current_time + timedelta(seconds=exp)
+        self.save()
+        return self.token
+
+    def revoke_token(self):
+        self.token_exp = dt.utcnow() - timedelta(seconds=61)
+
+    @staticmethod
+    def check_token(token):
+        u = User.query.filter_by(token=token).first()
+        if not u or u.token_exp < dt.utcnow():
+            return None
+        return u
+
+    #########################################
+    ############# End Methods for tokens ####
+    #########################################
+
     # We want to check if the user is following someone
     def is_following(self, user):
         return self.followed.filter(followers.c.followed_id == user.id).count() > 0
