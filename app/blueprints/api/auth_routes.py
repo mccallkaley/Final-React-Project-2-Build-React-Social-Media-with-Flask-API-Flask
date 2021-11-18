@@ -17,7 +17,7 @@ def get_token():
 def make_admin():
     user_id_to_be_admin = request.get_json().get('id')
     if not user_id_to_be_admin:
-        return make_response("Invlaid payload", 400)
+        return make_response("Invalid payload", 400)
     if not g.current_user.is_admin:
         return make_response("This action requires Admin privs", 403)
     user = User.query.get(user_id_to_be_admin)
