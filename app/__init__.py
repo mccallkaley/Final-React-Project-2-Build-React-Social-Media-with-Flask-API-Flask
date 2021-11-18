@@ -4,7 +4,7 @@ from flask_login import LoginManager #to log users in and out and maintain the s
 from flask_sqlalchemy import SQLAlchemy #this talk to the database
 from flask_migrate import Migrate #this makes altering the db a lot easier
 from flask_moment import Moment 
-
+from flask_cors import CORS
 
 
 # app instaniation
@@ -20,6 +20,7 @@ login.login_view = 'auth.login'
 db = SQLAlchemy()
 migrate = Migrate()
 moment = Moment()
+cors = CORS()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -29,6 +30,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app,db)
     moment.init_app(app)
+    cors.init_app(app)
 
     # Register our blueprints with the app
     from .blueprints.main import bp as main_bp

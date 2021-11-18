@@ -19,7 +19,7 @@ def login():
             login_user(u)
             # Give the user Feedback thats you logged in successfully
             flash('You have logged in', 'success')
-            return redirect(url_for("main.index"))
+            return redirect(url_for("social.index"))
         error_string = "Invalid Email password combo"
         return render_template('login.html.j2', error = error_string, form=form)
     return render_template('login.html.j2', form=form)
