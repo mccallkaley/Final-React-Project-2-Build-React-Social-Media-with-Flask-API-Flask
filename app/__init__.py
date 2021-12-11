@@ -32,17 +32,19 @@ def create_app(config_class=Config):
     moment.init_app(app)
     cors.init_app(app)
 
-    # Register our blueprints with the app
-    from .blueprints.main import bp as main_bp
-    app.register_blueprint(main_bp)
+    
+    
+    
 
     from .blueprints.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
-
+    
     from .blueprints.social import bp as social_bp
     app.register_blueprint(social_bp)
 
-    from .blueprints.api import bp as api_bp
-    app.register_blueprint(api_bp)
+    #from .blueprints.api import bp as api_bp
+    #app.register_blueprint(api_bp)
+    
+
 
     return app

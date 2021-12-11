@@ -31,4 +31,3 @@ def make_admin():
 @token_auth.login_required()
 def get_admin():
     return make_response({"isAdmin":g.current_user.is_admin or False}, 200)
-
